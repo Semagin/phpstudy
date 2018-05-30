@@ -1,0 +1,26 @@
+1. user_type
+    - user_type_id
+    - user_type
+        - type
+        - poster
+        - reader
+        - moderator
+2. users
+    - user_id
+    - user_type_id
+    - login_name
+    - view_name
+    - mail
+    - homepage
+    - passwd
+    - icon
+3. posts
+    - user_id
+    - text
+    - user_ip
+    - users_browser
+    - post_date
+    - pic_id
+4. user_pictures
+    - pic_id
+    - picture
