@@ -5,6 +5,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
 if (!userIsLoggedIn())
 {
   include 'welcomepage.html.php';
+  include 'book/index.php';
+//  exit();
 }
 
 // for submitting registration new user
@@ -75,9 +77,30 @@ if (isset($_GET['reguser']))
   include 'form.html.php';
   exit();
 }
+
+if (isset($_POST['text'])) {
+  include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+  try {
+      $sql = 'insert into posts set
+      user_id = :id,
+      user_text = :text,
+      post_date = :date';
+      $s = $pdo->prepare($sql);
+      $s->bindValue('id', 73);
+      $s->bindValue('text',$_POST['text']);
+      $s->bindValue('date', date('y-m-d'));
+      $s->execute();
+    } catch (PDOException $e) {
+      $error = 'Error submitting post.';
+      include 'error.html.php';
+      exit();
+    }  
+}
+
 // Display guestbook body
  if (isset($_SESSION['loggedIn']))
  {
     include 'logout.inc.html.php';
-
- }
+    include 'book/index.php';
+  exit();
+}

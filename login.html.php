@@ -12,20 +12,20 @@
     <?php if (isset($loginError)): ?>
       <p><?php htmlout($loginError); ?></p>
     <?php endif; ?>
-    <form action="" method="post">
+    <form action="/index.php" method="post">
       <div>
-        <label for="email">Email: <input type="text" name="email"
-            id="email"></label>
+        <label for="login_name">Login: <input type="text" name="login_name"
+            id="login"></label>
       </div>
       <div>
-        <label for="password">Password: <input type="password"
-            name="password" id="password"></label>
+        <label for="passwd">Password: <input type="password"
+            name="passwd" id="password"></label>
       </div>
       <div>
         <input type="hidden" name="action" value="login">
         <input type="submit" value="Log in">
       </div>
     </form>
-    <p><a href="/admin/">Return to JMS home</a></p>
+    <p><a href="/">home</a></p>
   </body>
 </html>
