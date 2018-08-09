@@ -1,12 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="guestbook2.css">
+  <title>My guestbook</title>
+</head>
+<body>
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
 
+if (!isset($_COOKIE['sorting']))
+{
+  $_COOKIE['sorting'] = 0;
+}
 if (!userIsLoggedIn())
 {
-  include 'welcomepage.html.php';
-  include 'book/index.php';
-//  exit();
+  include $_SERVER['DOCUMENT_ROOT'] . '/login/welcomepage.html.php';
 }
 
 // for submitting registration new user
@@ -74,33 +84,28 @@ if (isset($_GET['reguser']))
   $email = '';
   $id = '';
   $button = 'Register new account'; 
-  include 'form.html.php';
+  include $_SERVER['DOCUMENT_ROOT'] . '/login/form.html.php';
   exit();
 }
 
-if (isset($_POST['text'])) {
-  include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-  try {
-      $sql = 'insert into posts set
-      user_id = :id,
-      user_text = :text,
-      post_date = :date';
-      $s = $pdo->prepare($sql);
-      $s->bindValue('id', 73);
-      $s->bindValue('text',$_POST['text']);
-      $s->bindValue('date', date('y-m-d'));
-      $s->execute();
-    } catch (PDOException $e) {
-      $error = 'Error submitting post.';
-      include 'error.html.php';
-      exit();
-    }  
+if (isset($_POST['text'])) 
+{
+  require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
+
+  $newpost = new UserPost();
+  $newpost->setPost($_POST['text']);
+  $newpost->setUserId($_SESSION['userId']);
+  $newpost->saveUserPost();
 }
 
-// Display guestbook body
+// Display user session details
  if (isset($_SESSION['loggedIn']))
  {
-    include 'logout.inc.html.php';
-    include 'book/index.php';
-  exit();
-}
+    include $_SERVER['DOCUMENT_ROOT'] . '/login/logout.inc.html.php';
+  }  
+// Display guestbook body
+  include $_SERVER['DOCUMENT_ROOT'] . '/book/index.php';
+  ?>
+    
+</body>
+</html>

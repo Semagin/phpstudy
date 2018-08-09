@@ -1,0 +1,88 @@
+body
+{
+	background-color: #ffffff;
+	color: #000000;
+}
+
+a:link {
+  color:            #000000;
+  text-decoration:  none;
+  border-bottom:    thin dotted #b76666;
+}
+a:visited {
+  color:            #333333;
+  text-decoration:  none;
+  border-bottom:    thin dotted #675c47;
+}
+
+#tablecontainer
+{
+	display: table;
+	border: thin solid black;
+	margin: 0px 200px 0 200px;
+
+}
+#tableheader, #tableRow
+{
+	display: table-row;
+	border: thin solid black;
+}
+#headerlabel, #postid1, #userpost, #postdate
+{
+	display: table-cell;
+	border: thin solid black;
+}
+
+#headerlabel
+{
+	text-align: center;
+}
+#postid1
+{
+	width: 50px;
+	text-align: right;
+}
+#userpost
+{
+	padding-left: 20px;
+	width: 900px;
+}
+#postdate
+{
+	width: 100px;
+}
+
+#loginform
+{
+	float: right;
+}
+
+div.navigator{
+	font-size:smaller;
+	padding:5px;
+	text-align:center;
+}
+div.totalpagesdisplay{
+	padding-top:15px;
+	font-size:smaller;
+	text-align:center;
+	font-style:italic;
+}
+.navigator a, span.inactive{
+	padding : 0px 5px 2px 5px;
+	margin-left:0px;
+	border-top:1px solid #999999;
+	border-left:1px solid #999999;
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+}
+.navigator a:link, .navigator a:visited,
+    .navigator a:hover,.navigator a:active{
+	color: #3300CC;
+	background-color: #FAEBF7;
+	text-decoration: none;
+}
+span.inactive{
+	background-color :#EEEEEE;
+	font-style:italic;
+}

@@ -19,6 +19,7 @@ function userIsLoggedIn()
       $_SESSION['loggedIn'] = TRUE;
       $_SESSION['login_name'] = $_POST['login_name'];
       $_SESSION['passwd'] = $passwd;
+      $_SESSION['userId'] = getUserId($_POST['login_name']);
       return TRUE;
     }
     else
@@ -27,6 +28,7 @@ function userIsLoggedIn()
       unset($_SESSION['loggedIn']);
       unset($_SESSION['login_name']);
       unset($_SESSION['passwd']);
+      unset($_SESSION['userId']);
       $GLOBALS['loginError'] =
           'The specified login_name address or passwd was incorrect.';
       return FALSE;
@@ -39,6 +41,7 @@ function userIsLoggedIn()
     unset($_SESSION['loggedIn']);
     unset($_SESSION['login_name']);
     unset($_SESSION['passwd']);
+    unset($_SESSION['userId']);
     header('Location: ' . $_POST['goto']);
     exit();
   }
@@ -79,4 +82,31 @@ function databaseContainsAuthor($login_name, $passwd)
   {
     return FALSE;
   }
+}
+function getUserId($login_name)
+{
+   include 'db.inc.php';
+
+  try
+  {
+    $sql = 'SELECT user_id FROM users where login_name=:login_name';
+    $s = $pdo->prepare($sql);
+    $s->bindValue(':login_name', $login_name);
+    $s->execute();
+  }
+  catch (PDOException $e)
+  {
+    $error = 'Error searching for author.';
+    include 'error.html.php';
+    exit();
+  }
+
+  $row = $s->fetch();
+
+  if ($row[0] > 0)
+  {
+    return $row[0];
+  }
+
+
 }
