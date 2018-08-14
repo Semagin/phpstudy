@@ -11,17 +11,9 @@ define("SORTING", "sortby");
 passed to the page navigator class*/
 $offset=@$_GET[OFFSET];
 $sortby=@$_GET[SORTING];
-print_r($sortby);
+//print_r($sortby);
 //check variable
-if (!isset($_COOKIE['sortbyname'])) {
-setcookie('sortbyname',"desc",time()+3600);
-}
-if (!isset($_COOKIE['sortbydate'])) {
-setcookie('sortbydate',"desc",time()+3600);
-}
-if (!isset($_COOKIE['sortby'])) {
-setcookie('sortby',"date",time()+3600);
-}
+
 if (!isset($offset))
 {
   $totaloffset=0;
@@ -33,7 +25,11 @@ else
   $totaloffset = $offset * PERPAGE;
 
 }
-if (!isset($sortby))
+if (!isset ($_COOKIE['sortby']) or !isset ($_COOKIE['sortbyname']) or !isset ($_COOKIE['sortbydate']))
+       {
+          $tablesort="ORDER BY posts.post_date asc"; 
+           }
+elseif (!isset($sortby))
 {
       if ($_COOKIE['sortbyname']=='desc' && $_COOKIE['sortby']=='name') {
           $tablesort="ORDER BY users.view_name asc";
@@ -54,7 +50,7 @@ else
 {
   switch ($sortby) {
      case '1':
-       if ($_COOKIE['sortbyname']=='desc') {
+       if (!isset ($_COOKIE['sortbyname']) or $_COOKIE['sortbyname']=='desc') {
           $tablesort="ORDER BY users.view_name asc";
           setcookie('sortbyname',"asc",time()+3600);
           setcookie('sortby',"name",time()+3600);

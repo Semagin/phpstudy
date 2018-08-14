@@ -90,14 +90,28 @@ if (isset($_GET['reguser']))
 
 if (isset($_POST['text'])) 
 {
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
-
-  $newpost = new UserPost();
-  $newpost->setPost($_POST['text']);
-  $newpost->setUserId($_SESSION['userId']);
-  $newpost->saveUserPost();
+    if (preg_match('/^image\/p?jpeg$/i', $_FILES['upload']['type']) or
+    preg_match('/^image\/gif$/i', $_FILES['upload']['type']) or
+    preg_match('/^image\/(x-)?png$/i', $_FILES['upload']['type']))
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
+        $newpost = new UserPost();
+        $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
+        $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
+        $newpost->setPictureId($newpost->savePicture());
+        $newpost->setPost($_POST['text']);
+        $newpost->setUserId($_SESSION['userId']);
+        $newpost->saveUserPost();
+        }
+    else
+    {
+        $error = 'Пожалуйста, отправьте изображение в формате JPEG, GIF или PNG.';
+        include $_SERVER['DOCUMENT_ROOT'] . '/includes/error.html.php';
+        exit();
+    }
+    header('Location: .');
+    exit();
 }
-
 // Display user session details
  if (isset($_SESSION['loggedIn']))
  {
