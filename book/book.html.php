@@ -1,8 +1,8 @@
 
-<?php include_once $_SERVER['DOCUMENT_ROOT'] .
-    '/includes/helpers.inc.php'; 
- require 'PageNavigator.php';
- require_once 'UserPost.php';
+<?php 
+include_once $_SERVER['DOCUMENT_ROOT'] .'/includes/helpers.inc.php'; 
+require 'PageNavigator.php';
+require_once 'UserPost.php';
 define("PERPAGE", 5);
 //name of first parameter in query string
 define("OFFSET", "offset");
@@ -13,83 +13,70 @@ $offset=@$_GET[OFFSET];
 $sortby=@$_GET[SORTING];
 //print_r($sortby);
 //check variable
-
-if (!isset($offset))
-{
-  $totaloffset=0;
+if (!isset($offset)) {
+    $totaloffset=0;
 }
-else
-{
+else {
   //clean variable here
   //then calc record offset
-  $totaloffset = $offset * PERPAGE;
-
+    $totaloffset = $offset * PERPAGE;
 }
-if (!isset ($_COOKIE['sortby']) or !isset ($_COOKIE['sortbyname']) or !isset ($_COOKIE['sortbydate']))
-       {
-          $tablesort="ORDER BY posts.post_date asc"; 
-           }
-elseif (!isset($sortby))
-{
-      if ($_COOKIE['sortbyname']=='desc' && $_COOKIE['sortby']=='name') {
-          $tablesort="ORDER BY users.view_name asc";
-      }
-             elseif ($_COOKIE['sortbyname']=='asc'&& $_COOKIE['sortby']=='name')
-       {
-          $tablesort="ORDER BY users.view_name desc";
-       }
-      if ($_COOKIE['sortbydate']=='desc' && $_COOKIE['sortby']=='date') {
+if (!isset ($_COOKIE['sortby']) or !isset ($_COOKIE['sortbyname']) or !isset ($_COOKIE['sortbydate'])) {
+    $tablesort="ORDER BY posts.post_date asc"; 
+}
+elseif (!isset($sortby)) {
+    if ($_COOKIE['sortbyname']=='desc' && $_COOKIE['sortby']=='name') {
+        $tablesort="ORDER BY users.view_name asc";
+    }
+    elseif ($_COOKIE['sortbyname']=='asc'&& $_COOKIE['sortby']=='name') {
+        $tablesort="ORDER BY users.view_name desc";
+    }
+    if ($_COOKIE['sortbydate']=='desc' && $_COOKIE['sortby']=='date') {
           $tablesort="ORDER BY posts.post_date asc";
-      }
-             elseif ($_COOKIE['sortbydate']=='asc'&& $_COOKIE['sortby']=='date')
-       {
+    }
+    elseif ($_COOKIE['sortbydate']=='asc'&& $_COOKIE['sortby']=='date') {
           $tablesort="ORDER BY posts.post_date desc";
-       }
+    }
 }
-else
-{
-  switch ($sortby) {
-     case '1':
-       if (!isset ($_COOKIE['sortbyname']) or $_COOKIE['sortbyname']=='desc') {
-          $tablesort="ORDER BY users.view_name asc";
-          setcookie('sortbyname',"asc",time()+3600);
-          setcookie('sortby',"name",time()+3600);
-          break;
-       }
-       elseif ($_COOKIE['sortbyname']=='asc')
-       {
-          $tablesort="ORDER BY users.view_name desc";
-          setcookie('sortbyname',"desc",time()+3600);
-          setcookie('sortby',"name",time()+3600);
-          break;
-       }
+else {
+    switch ($sortby) {
+        case '1':
+            if (!isset ($_COOKIE['sortbyname']) or $_COOKIE['sortbyname']=='desc') {
+                $tablesort="ORDER BY users.view_name asc";
+                setcookie('sortbyname',"asc",time()+3600);
+                setcookie('sortby',"name",time()+3600);
+                break;
+            }
+            elseif ($_COOKIE['sortbyname']=='asc') {
+                $tablesort="ORDER BY users.view_name desc";
+                setcookie('sortbyname',"desc",time()+3600);
+                setcookie('sortby',"name",time()+3600);
+                break;
+            }
+            break;
+        case '2':
+            if ($_COOKIE['sortbydate']=='desc') {
+                $tablesort="ORDER BY posts.post_date asc";
+                setcookie('sortbydate',"asc",time()+3600);
+                setcookie('sortby',"date",time()+3600);
+                break;
+            }
+            elseif ($_COOKIE['sortbyname']=='asc') {
+                $tablesort="ORDER BY posts.post_date desc";
+                setcookie('sortbydate',"desc",time()+3600);
+                setcookie('sortby',"date",time()+3600);
+                break;
+            }
+            $tablesort="ORDER BY posts.post_date desc";
+            break;
+        default:
+            $tablesort="";
        break;
-     case '2':
-        if ($_COOKIE['sortbydate']=='desc') {
-          $tablesort="ORDER BY posts.post_date asc";
-          setcookie('sortbydate',"asc",time()+3600);
-          setcookie('sortby',"date",time()+3600);
-          break;
-       }
-       elseif ($_COOKIE['sortbyname']=='asc')
-       {
-          $tablesort="ORDER BY posts.post_date desc";
-          setcookie('sortbydate',"desc",time()+3600);
-          setcookie('sortby',"date",time()+3600);
-          break;
-       }
-       $tablesort="ORDER BY posts.post_date desc";
-       break;
-     
-     default:
-        $tablesort="";
-       break;
-   } 
+    } 
 }
-    $pagename = basename($_SERVER["PHP_SELF"]);
-
-   ?>
-    
+$pagename = basename($_SERVER["PHP_SELF"]);
+?>
+   
     <h1>Resent posts</h1>
       <div id="tablecontainer">
         <div id="tableheader">
@@ -108,13 +95,12 @@ else
     $totalcount = $pageposts->countAllPosts();
     $numpages = ceil($totalcount/PERPAGE);
 //create if needed
-    if($numpages > 1)
-    {
+    if($numpages > 1) {
 //create navigator
-      $nav = new PageNavigator($pagename, $totalcount, PERPAGE, $totaloffset);
+        $nav = new PageNavigator($pagename, $totalcount, PERPAGE, $totaloffset);
 //is the default but make explicit
-      $nav->setFirstParamName(OFFSET);
-      echo $nav->getNavigator();
+        $nav->setFirstParamName(OFFSET);
+        echo $nav->getNavigator();
     }
 ?>
     <p><a href="..">Return to home</a></p>
