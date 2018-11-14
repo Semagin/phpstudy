@@ -75,24 +75,35 @@ if (isset($_GET['reguser'])) {
     include $_SERVER['DOCUMENT_ROOT'] . '/login/form.html.php';
     exit();
 }
+// for user post
 if (isset($_POST['text'])) {
-    if (preg_match('/^image\/p?jpeg$/i', $_FILES['upload']['type']) or
-    preg_match('/^image\/gif$/i', $_FILES['upload']['type']) or
-    preg_match('/^image\/(x-)?png$/i', $_FILES['upload']['type'])) {
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
-        $newpost = new UserPost();
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
+    $newpost = new UserPost();
+    $newpost->setPost($_POST['text']);
+    $newpost->setUserId($_SESSION['userId']);
+    if ($_FILES['upload']['name']) {
+        switch ($_FILES['upload']['type']) {
+        case 'image/jpeg':
+            $newpost->setPictureFilenameExt('jpeg');
+            break;
+        case 'image/png':
+            $newpost->setPictureFilenameExt('png');
+            break;
+        case 'image/gif':
+            $newpost->setPictureFilenameExt('gif');
+            break;
+        default:
+            echo ("nonononono");
+            header('Location: .');
+            exit();
+            break;
+        }
         $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
         $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
         $newpost->setPictureId($newpost->savePicture());
-        $newpost->setPost($_POST['text']);
-        $newpost->setUserId($_SESSION['userId']);
-        $newpost->saveUserPost();
     }
-    else {
-        $error = 'Пожалуйста, отправьте изображение в формате JPEG, GIF или PNG.';
-        include $_SERVER['DOCUMENT_ROOT'] . '/includes/error.html.php';
-        exit();
-    }
+    
+    $newpost->saveUserPost();
     header('Location: .');
     exit();
 }

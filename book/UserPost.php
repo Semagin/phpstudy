@@ -66,19 +66,8 @@ class UserPost
     }
    	public function setPictureFilenameExt($pic)
     {
-        if (preg_match('/jpeg/i', $pic)) {
-            $ext = '.jpg';
-        }
-        else if (preg_match('/gif/i', $pic)) {
-            $ext = '.gif';
-        }
-        else if (preg_match('/png/i',$pic)) {
-            $ext = '.png';
-        }
-        else {
-            $ext = '.unknown';
-        }
-    $this->pictureFilenameExt = $ext;
+
+        $this->pictureFilenameExt = $pic;
     }
 	public function setPictureId ($picId)
     {
@@ -117,34 +106,55 @@ class UserPost
     {
         if (isset($this->userid)){
             include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-	  		try {
-                $sql = 'insert into posts set
-                user_id = :id,
-                user_text = :text,
-                post_date = :date,
-                pic_id = :picId';
-                //echo $sql;
-                $s = $pdo->prepare($sql);
-                $s->bindValue('id', $this->userid);
-                $s->bindValue('text',$this->post);
-                $s->bindValue('date', date('y-m-d'));
-                $s->bindValue('picId',$this->pictureId);
-                $s->execute();
-		    } 
-            catch (PDOException $e) {
-                $error = 'Error submitting post.';
-                include 'error.html.php';
-                exit();
-            }  
+            if ($this->pictureId) {
+                try {
+                    $sql = 'insert into posts set
+                    user_id = :id,
+                    user_text = :text,
+                    post_date = :date,
+                    pic_id = :picId';
+                    $s = $pdo->prepare($sql);
+                    $s->bindValue('id', $this->userid);
+                    $s->bindValue('text',$this->post);
+                    $s->bindValue('date', date('y-m-d'));
+                    $s->bindValue('picId',$this->pictureId);
+                    $s->execute();
+                } 
+                catch (PDOException $e) {
+                    $error = 'Error submitting post.';
+                    include 'error.html.php';
+                    exit();
+                }
+            }
+            else {
+                try {
+                    $sql = 'insert into posts set
+                    user_id = :id,
+                    user_text = :text,
+                    post_date = :date';
+                    //echo $sql;
+                    $s = $pdo->prepare($sql);
+                    $s->bindValue('id', $this->userid);
+                    $s->bindValue('text',$this->post);
+                    $s->bindValue('date', date('y-m-d'));
+                    $s->execute();
+                } 
+                catch (PDOException $e) {
+                    $error = 'Error submitting post.';
+                    include 'error.html.php';
+                    exit();
+                }
+            }                  
         }
     }
     public function savePicture()
     {
         try {
             include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-            $sql = 'INSERT INTO user_pictures SET picture = :filedata';
+            $sql = 'INSERT INTO user_pictures SET picture = :filedata, extension = :fileExt';
             $s = $pdo->prepare($sql);
             $s->bindValue(':filedata', $this->picture);
+            $s->bindValue(':fileExt', $this->pictureFilenameExt);
             $s->execute();
             return $pdo->lastInsertId();
         }
@@ -175,7 +185,7 @@ class UserPosts
 	public function getPosts($sortby, $perpage=1, $startpage=1) 
     {
   		include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-  		$select = 'SELECT users.view_name, posts.user_text, posts.post_date, user_pictures.picture, user_pictures.pic_id';
+  		$select = 'SELECT users.view_name, posts.user_text, posts.post_date, user_pictures.picture, user_pictures.pic_id, user_pictures.extension';
 		$from   = ' FROM users, posts left outer join user_pictures on user_pictures.pic_id=posts.pic_id';
   		$where  = ' WHERE users.user_id=posts.user_id '.$sortby.' limit '.$perpage." offset ".$startpage;
 		try {
@@ -196,7 +206,7 @@ class UserPosts
 		    $userpost->setPostDate($row['post_date']);
             $userpost->setPicture($row['picture']);
             $userpost->setPictureId($row['pic_id']);
-            $userpost->setPictureFilenameExt($row['picture']);
+            $userpost->setPictureFilenameExt($row['extension']);
 		    $this->postarray[] = array($userpost);
         }
     }
@@ -209,12 +219,17 @@ class UserPosts
           	<div id=\"userpost\">";
 			echo markdownout($posttoshow[0]->getPost());
 			$pic = $posttoshow[0]->getPicture();
-            $shortfilename = '/pics/'. $posttoshow[0]->getPictureId() . $posttoshow[0]->getPictureFilenameExt();
+            $shortfilename = '/pics/'. $posttoshow[0]->getPictureId() .".". $posttoshow[0]->getPictureFilenameExt();
             $filename = $_SERVER['DOCUMENT_ROOT'] .$shortfilename;
 //            $filename = $_SERVER['DOCUMENT_ROOT'] . '/pics/'. time() . $_SERVER['REMOTE_ADDR'] . $posttoshow[0]->getPictureFilenameExt();
             if ($pic) {
+                if (file_exists($filename)) {
+                    unlink($filename);
+                }
                 $filestream = fopen ($filename,'w');
                 $num = fwrite($filestream, $pic);
+ //               echo ("whereis my pic?".$filename);
+ //               exit();                
                 echo " <img src=\"".$shortfilename."\" />";
  //               unlink ($filename);
             }
