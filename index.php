@@ -7,8 +7,16 @@
 </head>
 <body>
 <?php
+require_once __DIR__ . '/vendor/autoload.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+$log = new Logger('name');
+$log->pushHandler(new StreamHandler('/vagrant/log.log', Logger::WARNING));
+//$log->addWarning('Foo');
+//$log->addError('Bar');
 
 if (!isset($_COOKIE['sorting'])) {
     $_COOKIE['sorting'] = 0;
