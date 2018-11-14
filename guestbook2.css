@@ -19,13 +19,14 @@ a:visited {
 {
 	display: table;
 	border: thin solid black;
-	margin: 0px 200px 0 200px;
+	margin: 0px 20px 0 20px;
 
 }
 #tableheader, #tableRow
 {
 	display: table-row;
 	border: thin solid black;
+
 }
 #headerlabel, #postid1, #userpost, #postdate
 {
@@ -39,17 +40,20 @@ a:visited {
 }
 #postid1
 {
-	width: 50px;
+	width: auto;
+    min-width: 160px;
 	text-align: right;
 }
 #userpost
 {
 	padding-left: 20px;
-	width: 900px;
+	width: 100%;
+    max-width: 735px;
+/*	width: 900px;*/
 }
 #postdate
 {
-	width: 100px;
+/*	width: 100px;*/
 }
 
 #loginform
@@ -85,4 +89,8 @@ div.totalpagesdisplay{
 span.inactive{
 	background-color :#EEEEEE;
 	font-style:italic;
+}
+img {
+	max-width:540px;
+    height: auto;
 }
