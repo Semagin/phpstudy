@@ -81,7 +81,7 @@ $pagename = basename($_SERVER["PHP_SELF"]);
       <div id="tablecontainer">
         <div id="tableheader">
           <div id= "headerlabel"><?php echo "<a href=".$pagename."?"."sortby=1".">User name</a>"; ?></div>
-          <div id= "headerlabel">Post text</div>
+          <div id= "headerlabel">Post</div>
           <div id= "headerlabel"><?php echo "<a href=".$pagename."?"."sortby=2".">Post date</a>"; ?></div>
         </div>
     <?php  

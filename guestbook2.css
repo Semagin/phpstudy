@@ -48,12 +48,10 @@ a:visited {
 {
 	padding-left: 20px;
 	width: 100%;
-    max-width: 735px;
-/*	width: 900px;*/
 }
 #postdate
 {
-/*	width: 100px;*/
+	min-width: 80px;
 }
 
 #loginform
@@ -91,6 +89,7 @@ span.inactive{
 	font-style:italic;
 }
 img {
-	max-width:540px;
+	max-width:80%;
+    width: auto;
     height: auto;
 }
