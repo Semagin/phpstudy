@@ -7,12 +7,31 @@
 </head>
 <body>
 <?php
+use Gbk\Core\Config;
+use Gbk\Core\Router;
+use Gbk\Core\Request;
+use Gbk\Utils\DependencyInjector;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
 require_once __DIR__ . '/vendor/autoload.php';
+
+$config = new Config();
+$dbConfig = $config->get('db');
+$db = new PDO(
+    'mysql:host=127.0.0.1;dbname=gbk',
+    $dbConfig['user'],
+    $dbConfig['password']
+);
+
+$di = new DependencyInjector();
+$di->set('PDO',$db);
+$di->set('Utils/config',$config);
+
+$router = new Router($di);
+
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 $log = new Logger('name');
 $log->pushHandler(new StreamHandler('/vagrant/log.log', Logger::WARNING));
 //$log->addWarning('Foo');

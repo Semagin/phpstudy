@@ -1,0 +1,7 @@
+{
+  "db": {
+    "user": "user",
+    "password": "123"
+  },
+  "log": "/var/log/gbk.log"
+}
