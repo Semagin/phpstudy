@@ -3,25 +3,16 @@
 namespace Gbk\Controllers;
 
 use Gbk\Exceptions\NotFoundException;
-use Gbk\Models\UserModel;
+use Gbk\Models\GbkModel;
 
-class UserController extends AbstractController {
-    public function login(): string {
-        if (!$this->request->isPost()) {
-                return ('here will be login form');
-//            return $this->render('login.twig', []);
-        }
-
+class GbkController extends AbstractController {
+    
+    public function showPosts(): string {
         $params = $this->request->getParams();
+        $gbkModel = new GbkModel($this->db);
 
-        if (!$params->has('email')) {
-            $params = ['errorMessage' => 'No info provided.'];
-                return ('no info!');
-//            return $this->render('login.twig', $params);
-        }
 
-        $email = $params->getString('email');
-        $userModel = new UserModel($this->db);
+/*        $userModel = new GbkModel($this->db);
 
         try {
             $user = $userModel->getByEmail($email);
@@ -30,8 +21,8 @@ class UserController extends AbstractController {
             $params = ['errorMessage' => 'Email not found.'];
             return $this->render('login.twig', $params);
         }
-
-        setcookie('user', $user->getId());
+*/
+//        setcookie('user', $user->getId());
 // if login was successful, show posts
 //        $newController = new BookController($this->di, $this->request);
  //       return $newController->getAll();

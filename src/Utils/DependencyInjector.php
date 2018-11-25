@@ -2,7 +2,7 @@
 
 namespace Gbk\Utils;
 
-use Bookstore\Exceptions\NotFoundException;
+use Gbk\Exceptions\NotFoundException;
 
 class DependencyInjector {
     private $dependencies = [];

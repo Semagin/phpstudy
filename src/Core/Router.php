@@ -3,8 +3,8 @@
 namespace Gbk\Core;
 
 use Gbk\Controllers\ErrorController;
-use Bookstore\Controllers\CustomerController;
-use Bookstore\Utils\DependencyInjector;
+use Gbk\Controllers\UserController;
+use Gbk\Utils\DependencyInjector;
 
 class Router {
     private $di;
@@ -16,7 +16,6 @@ class Router {
 
     public function __construct(DependencyInjector $di) {
         $this->di = $di;
-
         $json = file_get_contents(__DIR__ . '/../../config/routes.json');
         $this->routeMap = json_decode($json, true);
     }
@@ -27,6 +26,7 @@ class Router {
         foreach ($this->routeMap as $route => $info) {
             $regexRoute = $this->getRegexRoute($route, $info);
             if (preg_match("@^/$regexRoute$@", $path)) {
+                print_r('>'.$path.'>');
                 return $this->executeController($route, $path, $info, $request);
             }
         }
@@ -51,20 +51,26 @@ class Router {
         array $info,
         Request $request
     ): string {
-        $controllerName = '\Bookstore\Controllers\\' . $info['controller'] . 'Controller';
+        if (!($request->getCookies()->has('sorting'))) {
+            setcookie('sorting',0);
+        }
+        
+        $controllerName = '\Gbk\Controllers\\' . $info['controller'] . 'Controller';
+
         $controller = new $controllerName($this->di, $request);
 
         if (isset($info['login']) && $info['login']) {
             if ($request->getCookies()->has('user')) {
-                $customerId = $request->getCookies()->get('user');
-                $controller->setCustomerId($customerId);
+                $userId = $request->getCookies()->get('user');
+                $controller->setUserId($userId);
             } else {
-                $errorController = new CustomerController($this->di, $request);
+                $errorController = new UserController($this->di, $request);
                 return $errorController->login();
             }
         }
 
         $params = $this->extractParams($route, $path);
+
         return call_user_func_array([$controller, $info['method']], $params);
     }
 

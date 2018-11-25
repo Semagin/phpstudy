@@ -3,5 +3,5 @@
     "user": "user",
     "password": "123"
   },
-  "log": "/var/log/gbk.log"
+  "log": "/vagrant/gbk.log"
 }

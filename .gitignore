@@ -1,4 +1,5 @@
 vendor/
 .vagrant
 log.log
+gbk.log
 VikaTesting

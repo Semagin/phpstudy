@@ -14,7 +14,7 @@ use Gbk\Utils\DependencyInjector;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 require_once __DIR__ . '/vendor/autoload.php';
-
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
 $config = new Config();
 $dbConfig = $config->get('db');
 $db = new PDO(
@@ -23,23 +23,27 @@ $db = new PDO(
     $dbConfig['password']
 );
 
+$log = new Logger('gbk');
+$logFile = $config->get('log');
+$log->pushHandler(new StreamHandler($logFile, Logger::DEBUG));
+
 $di = new DependencyInjector();
 $di->set('PDO',$db);
 $di->set('Utils/config',$config);
+$di->set('Logger',$log);
 
 $router = new Router($di);
+$responce = $router-> route(new Request());
+echo $responce;
+exit();
+//---------------------------------------------------------------------------------
 
-include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
+
+// move to userController?
 require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+//
 
-$log = new Logger('name');
-$log->pushHandler(new StreamHandler('/vagrant/log.log', Logger::WARNING));
-//$log->addWarning('Foo');
-//$log->addError('Bar');
 
-if (!isset($_COOKIE['sorting'])) {
-    $_COOKIE['sorting'] = 0;
-}
 if (!userIsLoggedIn()) {
     include $_SERVER['DOCUMENT_ROOT'] . '/login/welcomepage.html.php';
 }
