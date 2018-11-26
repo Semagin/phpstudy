@@ -3,13 +3,13 @@
 namespace Gbk\Controllers;
 
 use Gbk\Exceptions\NotFoundException;
-use Gbk\Models\GbkModel;
+use Gbk\Models\PostModel;
 
-class GbkController extends AbstractController {
+class PostController extends AbstractController {
     
     public function showPosts(): string {
         $params = $this->request->getParams();
-        $gbkModel = new GbkModel($this->db);
+        $gbkModel = new PostModel($this->db);
 
 
 /*        $userModel = new GbkModel($this->db);

@@ -11,7 +11,7 @@ abstract class AbstractController {
     protected $config;
 //    protected $view;
     protected $log;
-    protected $customerId;
+    protected $userId;
     protected $di;
 
     public function __construct(DependencyInjector $di, Request $request) {
@@ -26,8 +26,8 @@ abstract class AbstractController {
  //       return 0;
     }
 
-    public function setUserId(int $customerId) {
-        $this->customerId = $customerId;
+    public function setUserId(int $userId) {
+        $this->userId = $userId;
     }
 
     protected function render(string $template, array $params): string {

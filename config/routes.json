@@ -1,6 +1,6 @@
 {
   "": {
-    "controller": "Gbk",
+    "controller": "Post",
     "method": "showPosts"
   },
 
