@@ -4,7 +4,6 @@ namespace Gbk\Models;
 
 use Gbk\Exceptions\NotFoundException;
 class PostModel extends AbstractModel {
-{
    public function saveUserPost (Post $userpost)
     {
         if (isset($this->userid)){
@@ -67,26 +66,9 @@ class PostModel extends AbstractModel {
             exit();
         }
     }
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-class UserPosts 
-{
-    private $postarray = array();
-    public function __construct($perpage=1, $startpage=1)
-    {
-    }
-//////////////////////////////////////////////////////////////////
-//destructor
-//////////////////////////////////////////////////////////////////
-    public function __destruct()
-    {
-        unset($this->postarray);
-    }
     public function getPosts($sortby, $perpage=1, $startpage=1) 
     {
+    $postarray = array();
         include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
         $select = 'SELECT users.view_name, posts.user_text, posts.post_date, user_pictures.picture, user_pictures.pic_id, user_pictures.extension';
         $from   = ' FROM users, posts left outer join user_pictures on user_pictures.pic_id=posts.pic_id';
@@ -110,7 +92,8 @@ class UserPosts
             $userpost->setPicture($row['picture']);
             $userpost->setPictureId($row['pic_id']);
             $userpost->setPictureFilenameExt($row['extension']);
-            $this->postarray[] = array($userpost);
+            $postarray[] = array($userpost);
         }
     }
+
 }
