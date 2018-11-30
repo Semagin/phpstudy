@@ -1,9 +1,13 @@
 <?php
 
 namespace Gbk\Models;
-
+use Gbk\Domain\Post;
 use Gbk\Exceptions\NotFoundException;
+
+use PDO;
 class PostModel extends AbstractModel {
+   const CLASSNAME = '\Gbk\Domain\Post';
+
    public function saveUserPost (Post $userpost)
     {
         if (isset($this->userid)){
@@ -66,34 +70,20 @@ class PostModel extends AbstractModel {
             exit();
         }
     }
-    public function getPosts($sortby, $perpage=1, $startpage=1) 
+
+    public function getPostsPage($sortby='desc', $perpage=1, $startpage=1): array
     {
-    $postarray = array();
-        include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+        $postarray = array();
         $select = 'SELECT users.view_name, posts.user_text, posts.post_date, user_pictures.picture, user_pictures.pic_id, user_pictures.extension';
         $from   = ' FROM users, posts left outer join user_pictures on user_pictures.pic_id=posts.pic_id';
-        $where  = ' WHERE users.user_id=posts.user_id '.$sortby.' limit '.$perpage." offset ".$startpage;
-        try {
+        $where  = ' WHERE users.user_id=posts.user_id '.'ORDER BY posts.post_date '.$sortby.' limit '.$perpage." offset ".$startpage;
             $sql = $select . $from . $where;
-//      echo $sql;
-            $s = $pdo->prepare($sql);
-            $s->execute();
-        }
-        catch (PDOException $e){
-            $error = 'Error fetching posts.';
-            include $_SERVER['DOCUMENT_ROOT'] . '/includes/error.html.php';
-            exit();
-        }
-        foreach ($s as $row) {
-            $userpost = new UserPost();
-            $userpost->setPost($row['user_text']);
-            $userpost->setUserName($row['view_name']);
-            $userpost->setPostDate($row['post_date']);
-            $userpost->setPicture($row['picture']);
-            $userpost->setPictureId($row['pic_id']);
-            $userpost->setPictureFilenameExt($row['extension']);
-            $postarray[] = array($userpost);
-        }
+      // echo $sql;
+            $sth=$this->db->prepare($sql);
+            $sth->execute();
+            $result = $sth->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);
+            // print_r($result);
+            return $result;
     }
 
 }

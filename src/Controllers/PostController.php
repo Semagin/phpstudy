@@ -12,7 +12,8 @@ class PostController extends AbstractController {
         $params = $this->request->getParams();
         $cookies = $this->request->getCookies();
         $pagePostsModel = new PostModel($this->db);
-        $posts = $pagePostsModel->getPosts($params,$cookies);
+        // $posts = $pagePostsModel->getPostsPage($params,$cookies);
+        $posts = $pagePostsModel->getPostsPage();
         $render = new PostView();
 
         return $render->render($posts);
