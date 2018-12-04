@@ -70,6 +70,9 @@ class Router {
         }
 
         $params = $this->extractParams($route, $path);
+        // print_r($controller);
+        // print_r($info['method']);
+        // print_r($params);
 
         return call_user_func_array([$controller, $info['method']], $params);
     }

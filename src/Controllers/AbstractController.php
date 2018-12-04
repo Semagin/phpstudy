@@ -31,6 +31,7 @@ abstract class AbstractController {
     }
 
     protected function render(string $template, array $params): string {
-        return $this->view->loadTemplate($template)->render($params);
+        return 0;
+        // return $this->view->loadTemplate($template)->render($params);
     }
 }

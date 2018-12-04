@@ -71,14 +71,14 @@ class PostModel extends AbstractModel {
         }
     }
 
-    public function getPostsPage($sortby='desc', $perpage=1, $startpage=1): array
+    public function getPostsPage($sortby='desc', $perpage=10, $startpage=1): array
     {
         $postarray = array();
-        $select = 'SELECT users.view_name, posts.user_text, posts.post_date, user_pictures.picture, user_pictures.pic_id, user_pictures.extension';
+        $select = 'SELECT posts.post_id, users.view_name as username, posts.user_text as post, posts.post_date as postdate, user_pictures.picture, user_pictures.pic_id as pictureId, user_pictures.extension as pictureFilenameExt';
         $from   = ' FROM users, posts left outer join user_pictures on user_pictures.pic_id=posts.pic_id';
         $where  = ' WHERE users.user_id=posts.user_id '.'ORDER BY posts.post_date '.$sortby.' limit '.$perpage." offset ".$startpage;
             $sql = $select . $from . $where;
-      // echo $sql;
+            // echo $sql;
             $sth=$this->db->prepare($sql);
             $sth->execute();
             $result = $sth->fetchAll(PDO::FETCH_CLASS, self::CLASSNAME);

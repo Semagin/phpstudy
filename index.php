@@ -15,6 +15,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 require_once __DIR__ . '/vendor/autoload.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/magicquotes.inc.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/helpers.inc.php';
 $config = new Config();
 $dbConfig = $config->get('db');
 $db = new PDO(
