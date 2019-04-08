@@ -19,6 +19,7 @@ class Request {
         $this->params = new FilteredMap(array_merge($_POST, $_GET));
         $this->cookies = new FilteredMap($_COOKIE);
 //        print_r(array_merge($_POST, $_GET));
+        //print_r($this->path);
     }
 
     public function getUrl(): string {

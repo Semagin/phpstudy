@@ -6,6 +6,8 @@
   <title>My guestbook</title>
 </head>
 <body>
+<!-- <script src="app.js"></script>
+<script src=""></script> -->
 <?php
 use Gbk\Core\Config;
 use Gbk\Core\Router;

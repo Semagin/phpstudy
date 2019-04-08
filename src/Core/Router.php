@@ -22,13 +22,15 @@ class Router {
 
     public function route(Request $request): string {
         $path = $request->getPath();
-
-        foreach ($this->routeMap as $route => $info) {
-            $regexRoute = $this->getRegexRoute($route, $info);
-            if (preg_match("@^/$regexRoute$@", $path)) {
-                // print_r('>'.$path.'>');
-                return $this->executeController($route, $path, $info, $request);
+        if ($path !== "//") {
+            foreach ($this->routeMap as $route => $info) {
+                $regexRoute = $this->getRegexRoute($route, $info);
+                if (preg_match('@'.$regexRoute.'@', $path)) {
+                        return $this->executeController($route, $path, $info, $request);
+                }
             }
+        }else {
+            return 'root';
         }
 
         $errorController = new ErrorController($this->di, $request);
@@ -56,7 +58,6 @@ class Router {
         }
         
         $controllerName = '\Gbk\Controllers\\' . $info['controller'] . 'Controller';
-
         $controller = new $controllerName($this->di, $request);
 
         if (isset($info['login']) && $info['login']) {

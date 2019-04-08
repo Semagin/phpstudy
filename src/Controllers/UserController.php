@@ -4,14 +4,16 @@ namespace Gbk\Controllers;
 
 use Gbk\Exceptions\NotFoundException;
 use Gbk\Models\UserModel;
+use Gbk\Views\LoginView;
 
 class UserController extends AbstractController {
     public function login(): string {
         if (!$this->request->isPost()) {
-                return ('here will be login form');
+            $loginForm = new LoginView();
+                return ($loginForm->render());
 //            return $this->render('login.twig', []);
         }
-
+                return ('here will be login form!!!');    
         $params = $this->request->getParams();
 
         if (!$params->has('email')) {
