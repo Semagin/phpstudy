@@ -6,14 +6,7 @@ class LoginView
 {
 
 function render(): string {
-  return ('<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="guestbook2.css">
-    <title>Log In</title>
-  </head>
-  <body>
+  return ('
     <h1>Log In</h1>
     <p>Please log in to view the page that you requested.</p>
     <form action="/index.php" method="post">
@@ -31,8 +24,7 @@ function render(): string {
       </div>
     </form>
     <p><a href="/">home</a></p>
-  </body>
-</html>');
+  ');
 }
 
 

@@ -5,6 +5,7 @@ namespace Gbk\Controllers;
 use Gbk\Exceptions\NotFoundException;
 use Gbk\Models\UserModel;
 use Gbk\Views\LoginView;
+use Gbk\Views\RegView;
 
 class UserController extends AbstractController {
     public function login(): string {
@@ -39,4 +40,9 @@ class UserController extends AbstractController {
  //       return $newController->getAll();
         return 'show me posts';
     }
+    public function showRegisterForm() : string {
+            $regForm = new RegView();
+                return ($regForm->render());
+    }
+
 }

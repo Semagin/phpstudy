@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"2018-11-22-10-39-16.089-VBoxSVC-4442.log",
+				"2018-11-22-16-57-40.039-VBoxSVC-3039.log",
+				"2018-11-23-16-56-49.070-VBoxSVC-7140.log",
+				"log.log"
+			],
+			"folder_exclude_patterns":
+			[
+				".vagrant",
+				"vendor",
+				"VikaTesting"
+			],
+			"path": "."
+		}
+	]
+}

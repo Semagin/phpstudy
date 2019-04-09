@@ -22,17 +22,16 @@ class Router {
 
     public function route(Request $request): string {
         $path = $request->getPath();
-        if ($path !== "//") {
+        $returnPage='';
             foreach ($this->routeMap as $route => $info) {
                 $regexRoute = $this->getRegexRoute($route, $info);
-                if (preg_match('@'.$regexRoute.'@', $path)) {
-                        return $this->executeController($route, $path, $info, $request);
+                // if (preg_match('@'.$path.'@', $regexRoute)) {
+                if (preg_match('@'.$regexRoute.'@', $path, $matches )) {
+                        print_r($matches);
+                        $returnPage = $returnPage.($this->executeController($route, $path, $info, $request));
                 }
             }
-        }else {
-            return 'root';
-        }
-
+            return $returnPage;
         $errorController = new ErrorController($this->di, $request);
         return $errorController->notFound();
     }

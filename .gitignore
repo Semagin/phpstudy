@@ -1,5 +1,8 @@
 vendor/
 .vagrant
+*.log
+*.box
 log.log
 gbk.log
 VikaTesting
+pet_project.sublime-workspace
