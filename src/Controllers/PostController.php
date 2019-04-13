@@ -9,6 +9,10 @@ use Gbk\Views\PostView;
 class PostController extends AbstractController {
     
     public function showPosts(): string {
+        
+        $userController = new UserController($this->di, $this->request);
+        $returnPage = $userController->showWelcomePlate();
+
         $params = $this->request->getParams();
         $cookies = $this->request->getCookies();
         $pagePostsModel = new PostModel($this->db);
@@ -16,6 +20,6 @@ class PostController extends AbstractController {
         $posts = $pagePostsModel->getPostsPage();
         // $rndr = new NotFoundException();
         $rndr = new PostView();
-        return $rndr->render($posts);
+        return $returnPage.($rndr->render($posts));
     }
 }

@@ -1,7 +1,10 @@
 {
-  "": {
+  "/:page": {
     "controller": "Post",
-    "method": "showPosts"
+    "method": "showPosts",
+    "params": {
+      "page": "number"
+    }
   },
 
   "login": {
@@ -12,70 +15,6 @@
   "register": {
     "controller": "User",
     "method": "showRegisterForm"
-  },
-
-  "books/:page": {
-    "controller": "Book",
-    "method": "getAllWithPage",
-    "params": {
-      "page": "number"
-    }
-  },
-  "books": {
-    "controller": "Book",
-    "method": "getAll"
-  },
-  "book/:id": {
-    "controller": "Book",
-    "method": "get",
-    "params": {
-      "id": "number"
-    }
-  },
-  "books/search": {
-    "controller": "Book",
-    "method": "search"
-  },
-  "sales": {
-    "controller": "Sales",
-    "method": "getByUser",
-    "login": true
-  },
-  "sales/:id": {
-    "controller": "Sales",
-    "method": "get",
-    "login": true,
-    "params": {
-      "id": "number"
-    }
-  },
-  "my-books": {
-    "controller": "Book",
-    "method": "getByUser",
-    "login": true
-  },
-  "book/:id/buy": {
-    "controller": "Sales",
-    "method": "add",
-    "login": true,
-    "params": {
-      "id": "number"
-    }
-  },
-  "book/:id/borrow": {
-    "controller": "Book",
-    "method": "borrow",
-    "login": true,
-    "params": {
-      "id": "number"
-    }
-  },
-  "book/:id/return": {
-    "controller": "Book",
-    "method": "returnBook",
-    "login": true,
-    "params": {
-      "id": "number"
-    }
   }
+  
 }

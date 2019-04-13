@@ -7,13 +7,27 @@
 				"2018-11-22-10-39-16.089-VBoxSVC-4442.log",
 				"2018-11-22-16-57-40.039-VBoxSVC-3039.log",
 				"2018-11-23-16-56-49.070-VBoxSVC-7140.log",
-				"log.log"
+				"log.log",
+				"Vagrantfile",
+				"task.pdf",
+				"readme",
+				"provisioner.sh",
+				"php.box",
+				"pet_project.sublime-project",
+				"db_testdata.sql",
+				"db_structure.sql",
+				"db_structure",
+				"composer.lock",
+				"composer.json",
+				"2019-04-12-18-19-37.017-VBoxSVC-3045.log",
+				".gitignore"
 			],
 			"folder_exclude_patterns":
 			[
 				".vagrant",
 				"vendor",
-				"VikaTesting"
+				"VikaTesting",
+				"pics"
 			],
 			"path": "."
 		}

@@ -7,7 +7,7 @@ class RegView
 
 function render(): string {
   return ('
-    <form action="adduser" method="post">
+    <form action="/1" method="post">
       <div>
         <label for="login_name">Login Name: <input type="text" name="login_name"
             id="login_name" value=""></label>
