@@ -36,7 +36,9 @@ class Router {
    
 
         $path = $request->getPath();
-
+        if ($path==='/') {
+            $path='/1';
+        }
 
         //  if ($request->isPost()) {
         //     print_r('try to logout?');
