@@ -52,21 +52,13 @@ class UserController extends AbstractController {
     }
 
     public function showWelcomePlate() : string {
-        // if ($this->request->getParams()) {
-        //     # code...
-        // }
+
         if ($this->request->getParams()->getString('action')==='newlogin') {
             $userModel = new UserModel($this->db);
             $userModel->regUser();
-
-            // print_r($_POST['login_name']);
         }
-        // if (!$this->request->isPost()) {
-        //     print_r('try to login!');
-        // }
         require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
         if (!userIsLoggedIn()) {
-            // print_r('NOT LOGIN!');
             $welcomeForm = new WelcomePlateView();
             return ($welcomeForm->render());
         }

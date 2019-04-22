@@ -1,5 +1,6 @@
 <?php
-  		foreach ($posts as $posttoshow) {
+  		echo "<div id=\"tablecontainer\">";
+        foreach ($posts as $posttoshow) {
                 // print_r($posttoshow->getPost());
                 // print_r($posttoshow);
         	echo "<div id=\"tableRow\">       		<div id=\"postid1\">";
@@ -26,3 +27,4 @@
          	echo markdownout($posttoshow->getPostDate());
          	echo "</div></div>";
         }
+    echo "</div>";

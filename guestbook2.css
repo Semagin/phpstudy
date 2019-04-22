@@ -1,5 +1,6 @@
 body
 {
+	
 	background-color: #ffffff;
 	color: #000000;
 }
@@ -20,7 +21,7 @@ a:visited {
 	display: table;
 	border: thin solid black;
 	margin: 0px 20px 0 20px;
-
+	width: 95%;
 }
 #tableheader, #tableRow
 {
@@ -57,6 +58,12 @@ a:visited {
 #loginform
 {
 	float: right;
+}
+
+#loginspace
+{
+	min-height: 30px;
+	/*float: right;*/
 }
 
 div.navigator{

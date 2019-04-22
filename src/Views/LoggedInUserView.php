@@ -8,17 +8,27 @@ class LoggedInUserView
   function render(): string {
     
     return ('
-      <p>
-      <form action="" method="post">
-        <div id="loginform">
+        <div id="loginspace">
+      <form id="loginform" action="" method="post">
           '.$_SESSION['login_name'].'
           <input type="hidden" name="action" value="logout">
           <input type="hidden" name="goto" value="/1">
           <input type="submit" value="Log out">
-        </div>
       </form>
-      </p>
+        </div>
     ');
+
+
+      // <p>
+      // <form action="" method="post">
+      //   <div id="loginform">
+      //     '.$_SESSION['login_name'].'
+      //     <input type="hidden" name="action" value="logout">
+      //     <input type="hidden" name="goto" value="/1">
+      //     <input type="submit" value="Log out">
+      //   </div>
+      // </form>
+      // </p>
 
 // not here
 

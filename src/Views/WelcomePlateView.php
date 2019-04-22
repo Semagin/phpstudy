@@ -8,9 +8,10 @@ class WelcomePlateView
   function render(): string {
     
     return ('
-      <p id="loginform">You are not logged in <br>
+      <div id="loginspace"><p id="loginform">You are not logged ins
     please <a href="login">login </a> or <a href="/register">register</a>  to leave a message </p>
     <h1 id="welcomephrase">Welcome to my guestbook!</h1>
+      </div>
     ');
 
 // not here
