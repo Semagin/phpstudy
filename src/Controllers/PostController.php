@@ -13,13 +13,17 @@ class PostController extends AbstractController {
     public function showPosts($page): string {
         $userController = new UserController($this->di, $this->request);
         $returnPage = $userController->showWelcomePlate();
-
+        $sortDirection="asc";
         $params = $this->request->getParams();
-        // print_r($this->request);
+        if ($params->has("sortby")) {
+            $sortDirection = ($params->getString("sortby")=="1") ? "asc" : "desc" ;
+        }
+        // print_r($sortDirection);
+        // print_r($params->getString("sortby"));
         $cookies = $this->request->getCookies();
         $pagePostsModel = new PostModel($this->db);
         // $posts = $pagePostsModel->getPostsPage($params,$cookies);
-        $posts = $pagePostsModel->getPostsPage($page);
+        $posts = $pagePostsModel->getPostsPage($page,$sortDirection);
         // $rndr = new NotFoundException();
         $rndr = new PostView();
         $pagename = '';
