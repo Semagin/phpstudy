@@ -38,47 +38,47 @@ $di->set('Logger',$log);
 $router = new Router($di);
 $responce = $router-> route(new Request());
 echo $responce;
-exit();
-//---------------------------------------------------------------------------------
+// exit();
+// //---------------------------------------------------------------------------------
 
-// for user post
-if (isset($_POST['text'])) {
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
-    $newpost = new UserPost();
-    $newpost->setPost($_POST['text']);
-    $newpost->setUserId($_SESSION['userId']);
-    if ($_FILES['upload']['name']) {
-        switch ($_FILES['upload']['type']) {
-        case 'image/jpeg':
-            $newpost->setPictureFilenameExt('jpeg');
-            break;
-        case 'image/png':
-            $newpost->setPictureFilenameExt('png');
-            break;
-        case 'image/gif':
-            $newpost->setPictureFilenameExt('gif');
-            break;
-        default:
-            echo ("nonononono");
-            header('Location: .');
-            exit();
-            break;
-        }
-        $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
-        $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
-        $newpost->setPictureId($newpost->savePicture());
-    }
+// // for user post
+// if (isset($_POST['text'])) {
+//     require_once $_SERVER['DOCUMENT_ROOT'] . '/book/UserPost.php';
+//     $newpost = new UserPost();
+//     $newpost->setPost($_POST['text']);
+//     $newpost->setUserId($_SESSION['userId']);
+//     if ($_FILES['upload']['name']) {
+//         switch ($_FILES['upload']['type']) {
+//         case 'image/jpeg':
+//             $newpost->setPictureFilenameExt('jpeg');
+//             break;
+//         case 'image/png':
+//             $newpost->setPictureFilenameExt('png');
+//             break;
+//         case 'image/gif':
+//             $newpost->setPictureFilenameExt('gif');
+//             break;
+//         default:
+//             echo ("nonononono");
+//             header('Location: .');
+//             exit();
+//             break;
+//         }
+//         $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
+//         $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
+//         $newpost->setPictureId($newpost->savePicture());
+//     }
     
-    $newpost->saveUserPost();
-    header('Location: .');
-    exit();
-}
-// Display user session details
-if (isset($_SESSION['loggedIn'])) {
-    include $_SERVER['DOCUMENT_ROOT'] . '/login/logout.inc.html.php';
-  }  
-// Display guestbook body
-include $_SERVER['DOCUMENT_ROOT'] . '/book/index.php';
+//     $newpost->saveUserPost();
+//     header('Location: .');
+//     exit();
+// }
+// // Display user session details
+// if (isset($_SESSION['loggedIn'])) {
+//     include $_SERVER['DOCUMENT_ROOT'] . '/login/logout.inc.html.php';
+//   }  
+// // Display guestbook body
+// include $_SERVER['DOCUMENT_ROOT'] . '/book/index.php';
   ?>
     
 </body>
