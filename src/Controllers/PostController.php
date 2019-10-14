@@ -34,7 +34,7 @@ class PostController extends AbstractController {
             //is the default but make explicit
             $nav->setFirstParamName($page*PERPAGE-5);
             $nav->getNavigator();
-            return $returnPage.($rndr->render($posts)).($nav->getNavigator());
+            return $returnPage.($rndr->render($posts,$page)).($nav->getNavigator());
         }
         return $returnPage.($rndr->render($posts));
     }
