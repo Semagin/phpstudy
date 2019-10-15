@@ -71,12 +71,12 @@ class PostModel extends AbstractModel {
         }
     }
 
-    public function getPostsPage($startpage=1, $sortby='asc', $perpage=5): array
+    public function getPostsPage($startpage=1, $sortby='', $perpage=5): array
     {
         $postarray = array();
         $select = 'SELECT posts.post_id, users.view_name as username, posts.user_text as post, posts.post_date as postdate, user_pictures.picture, user_pictures.pic_id as pictureId, user_pictures.extension as pictureFilenameExt';
         $from   = ' FROM users, posts left outer join user_pictures on user_pictures.pic_id=posts.pic_id';
-        $where  = ' WHERE users.user_id=posts.user_id '.'ORDER BY posts.post_date '.$sortby.' limit '.$perpage." offset ".($startpage*$perpage-5);
+        $where  = ' WHERE users.user_id=posts.user_id '.$sortby.' limit '.$perpage." offset ".($startpage*$perpage-5);
             $sql = $select . $from . $where;
             // echo $sql;
             $sth=$this->db->prepare($sql);

@@ -13,17 +13,74 @@ class PostController extends AbstractController {
     public function showPosts($page): string {
         $userController = new UserController($this->di, $this->request);
         $returnPage = $userController->showWelcomePlate();
-        $sortDirection="asc";
+        // $sortDirection="asc";
         $params = $this->request->getParams();
-        if ($params->has("sortby")) {
-            $sortDirection = ($params->getString("sortby")=="1") ? "asc" : "desc" ;
-        }
+        // if ($params->has("sortby")) {
+        //     $sortDirection = ($params->getString("sortby")=="1") ? "asc" : "desc" ;
+        // }
         // print_r($sortDirection);
         // print_r($params->getString("sortby"));
         $cookies = $this->request->getCookies();
         $pagePostsModel = new PostModel($this->db);
         // $posts = $pagePostsModel->getPostsPage($params,$cookies);
-        $posts = $pagePostsModel->getPostsPage($page,$sortDirection);
+        $sortby=@$_GET["sortby"];
+        if (!isset ($_COOKIE['sortby']) or !isset ($_COOKIE['sortbyname']) or !isset ($_COOKIE['sortbydate'])) {
+            $tablesort="ORDER BY posts.post_date asc";
+            setcookie('sortbydate',"asc",time()+3600);
+            setcookie('sortbyname',"asc",time()+3600);
+            setcookie('sortby',"date",time()+3600);
+
+        }
+        elseif (!isset($sortby)) {
+            if ($_COOKIE['sortbyname']=='desc' && $_COOKIE['sortby']=='name') {
+                $tablesort="ORDER BY users.view_name desc";
+            }
+            elseif ($_COOKIE['sortbyname']=='asc'&& $_COOKIE['sortby']=='name') {
+                $tablesort="ORDER BY users.view_name asc";
+            }
+            if ($_COOKIE['sortbydate']=='desc' && $_COOKIE['sortby']=='date') {
+                  $tablesort="ORDER BY posts.post_date desc";
+            }
+            elseif ($_COOKIE['sortbydate']=='asc'&& $_COOKIE['sortby']=='date') {
+                  $tablesort="ORDER BY posts.post_date asc";
+            }
+        }
+        else {
+            switch ($sortby) {
+                case '1':
+                    if (!isset ($_COOKIE['sortbyname']) or $_COOKIE['sortbyname']=='desc') {
+                        $tablesort="ORDER BY users.view_name asc";
+                        setcookie('sortbyname',"asc",time()+3600);
+                        setcookie('sortby',"name",time()+3600);
+                        break;
+                    }
+                    elseif ($_COOKIE['sortbyname']=='asc') {
+                        $tablesort="ORDER BY users.view_name desc";
+                        setcookie('sortbyname',"desc",time()+3600);
+                        setcookie('sortby',"name",time()+3600);
+                        break;
+                    }
+                    break;
+                case '2':
+                    if (!isset ($_COOKIE['sortbydate']) or $_COOKIE['sortbydate']=='desc') {
+                        $tablesort="ORDER BY posts.post_date asc";
+                        setcookie('sortbydate',"asc",time()+3600);
+                        setcookie('sortby',"date",time()+3600);
+                        break;
+                    }
+                    elseif ($_COOKIE['sortbydate']=='asc') {
+                        $tablesort="ORDER BY posts.post_date desc";
+                        setcookie('sortbydate',"desc",time()+3600);
+                        setcookie('sortby',"date",time()+3600);
+                        break;
+                    }
+                    break;
+                default:
+                    $tablesort="";
+                break;
+            } 
+        }
+        $posts = $pagePostsModel->getPostsPage($page, $tablesort);
         // $rndr = new NotFoundException();
         $rndr = new PostView();
         $pagename = '';
