@@ -6,23 +6,21 @@ use Gbk\Exceptions\NotFoundException;
 use Gbk\Models\PostModel;
 use Gbk\Views\PostView;
 use Gbk\Views\PageNavigatorView;
+use Gbk\Domain\Post;
 define("PERPAGE", 5);
 
 class PostController extends AbstractController {
     
     public function showPosts($page): string {
+
         $userController = new UserController($this->di, $this->request);
         $returnPage = $userController->showWelcomePlate();
-        // $sortDirection="asc";
+        if (isset($_POST['text'])) {
+            $this->saveNewPost();
+        }
         $params = $this->request->getParams();
-        // if ($params->has("sortby")) {
-        //     $sortDirection = ($params->getString("sortby")=="1") ? "asc" : "desc" ;
-        // }
-        // print_r($sortDirection);
-        // print_r($params->getString("sortby"));
         $cookies = $this->request->getCookies();
         $pagePostsModel = new PostModel($this->db);
-        // $posts = $pagePostsModel->getPostsPage($params,$cookies);
         $sortby=@$_GET["sortby"];
         if (!isset ($_COOKIE['sortby']) or !isset ($_COOKIE['sortbyname']) or !isset ($_COOKIE['sortbydate'])) {
             $tablesort="ORDER BY posts.post_date asc";
@@ -81,14 +79,11 @@ class PostController extends AbstractController {
             } 
         }
         $posts = $pagePostsModel->getPostsPage($page, $tablesort);
-        // $rndr = new NotFoundException();
         $rndr = new PostView();
         $pagename = '';
-        // $pagename = basename($_SERVER["PHP_SELF"]);
         $totalcount = $pagePostsModel->countAllPosts();
         $numpages = ceil($totalcount/PERPAGE);
         //create if needed
-//        print_r($numpages);
         if($numpages > 1) {
             //create navigator
             $nav = new PageNavigatorView($pagename, $totalcount, PERPAGE, $page*PERPAGE-5);
@@ -98,5 +93,41 @@ class PostController extends AbstractController {
             return $returnPage.($rndr->render($posts,$page)).($userController->showPostForm()).($nav->getNavigator());
         }
         return $returnPage.($rndr->render($posts));
+    }
+    public function saveNewPost()
+    {
+        // create post structure and save it with saveUserPost
+        
+        if (isset($_POST['text'])) {
+        $newpost = new Post();
+        $newpost->setPost($_POST['text']);
+        $newpost->setUserId($_SESSION['userId']);
+        $newPostModel = new PostModel($this->db);
+        if ($_FILES['upload']['name']) {
+            switch ($_FILES['upload']['type']) {
+            case 'image/jpeg':
+                $newpost->setPictureFilenameExt('jpeg');
+                break;
+            case 'image/png':
+                $newpost->setPictureFilenameExt('png');
+                break;
+            case 'image/gif':
+                $newpost->setPictureFilenameExt('gif');
+                break;
+            default:
+                echo ("nonononono");
+                header('Location: .');
+                exit();
+                break;
+            }
+            $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
+            $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
+            $newpost->setPictureId($newPostModel->savePicture($newpost));
+        }
+        // print_r($newpost);
+        $newPostModel->saveUserPost($newpost);
+        // header('Location: .');
+        // exit();
+        }
     }
 }

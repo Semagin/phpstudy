@@ -5,6 +5,7 @@ namespace Gbk\Core;
 use Gbk\Controllers\ErrorController;
 use Gbk\Controllers\UserController;
 use Gbk\Utils\DependencyInjector;
+use Gbk\Controllers\PostController;
 
 class Router {
     private $di;
@@ -39,9 +40,14 @@ class Router {
         if ($path==='/') {
             $path='/1';
         }
+        
 
         //  if ($request->isPost()) {
-        //     print_r('try to logout?');
+        //     if ($request->getParams()->has('action')) {
+        //         if ($request->getParams()->getString('action') == 'upload') {
+        //             print_r($_FILES['upload']['name']);
+        //         }
+        //     }
         // }
         // print_r($request->getParams());
         $returnPage='';
@@ -86,28 +92,26 @@ class Router {
         array $info,
         Request $request
     ): string {
-        if (!($request->getCookies()->has('sorting'))) {
-            setcookie('sorting',0);
-        }
-        
         $controllerName = '\Gbk\Controllers\\' . $info['controller'] . 'Controller';
         $controller = new $controllerName($this->di, $request);
-
-        if (isset($info['login']) && $info['login']) {
-            if ($request->getCookies()->has('user')) {
-                $userId = $request->getCookies()->get('user');
-                $controller->setUserId($userId);
-            } else {
-                $errorController = new UserController($this->di, $request);
-                return $errorController->login();
-            }
-        }
+        // if (isset($info['login']) && $info['login']) {
+        //     if ($request->getCookies()->has('user')) {
+        //         $userId = $request->getCookies()->get('user');
+        //         $controller->setUserId($userId);
+        //     } else {
+        //         $errorController = new UserController($this->di, $request);
+        //         return $errorController->login();
+        //     }
+        // }
 
         $params = $this->extractParams($route, $path);
         // print_r($controller);
         // print_r($info['method']);
         // print_r($params);
+        // 
 
+//        print_r($_SESSION);
+      
         return call_user_func_array([$controller, $info['method']], $params);
     }
     /**

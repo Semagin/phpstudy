@@ -11,6 +11,7 @@ class Request {
     private $method;
     private $params;
     private $cookies;
+    private $session;
 
     public function __construct() {
         $this->domain = $_SERVER['HTTP_HOST'];
@@ -18,6 +19,7 @@ class Request {
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->params = new FilteredMap(array_merge($_POST, $_GET));
         $this->cookies = new FilteredMap($_COOKIE);
+        // $this->session = $_SESSION;
     }
 
     public function getUrl(): string {

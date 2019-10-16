@@ -10,9 +10,10 @@ class PostModel extends AbstractModel {
 
    public function saveUserPost (Post $userpost)
     {
-        if (isset($this->userid)){
+        // print_r($userpost);
+        if (($userpost->getUserId())){
             include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-            if ($this->pictureId) {
+            if (($userpost->getPictureId())) {
                 try {
                     $sql = 'insert into posts set
                     user_id = :id,
@@ -20,10 +21,11 @@ class PostModel extends AbstractModel {
                     post_date = :date,
                     pic_id = :picId';
                     $s = $pdo->prepare($sql);
-                    $s->bindValue('id', $this->userid);
-                    $s->bindValue('text',$this->post);
+                    $s->bindValue('id', $userpost->getUserId());
+                    $s->bindValue('text',$userpost->getPost());
                     $s->bindValue('date', date('y-m-d'));
-                    $s->bindValue('picId',$this->pictureId);
+                    $s->bindValue('picId',$userpost->getPictureId());
+
                     $s->execute();
                 } 
                 catch (PDOException $e) {
@@ -38,10 +40,10 @@ class PostModel extends AbstractModel {
                     user_id = :id,
                     user_text = :text,
                     post_date = :date';
-                    //echo $sql;
+                    // print_r ($sql);
                     $s = $pdo->prepare($sql);
-                    $s->bindValue('id', $this->userid);
-                    $s->bindValue('text',$this->post);
+                    $s->bindValue('id', $userpost->getUserId());
+                    $s->bindValue('text',$userpost->getPost());
                     $s->bindValue('date', date('y-m-d'));
                     $s->execute();
                 } 
@@ -52,15 +54,16 @@ class PostModel extends AbstractModel {
                 }
             }                  
         }
+        // print_r($userpost->userid);
     }
-    private function savePicture()
+    public function savePicture(Post $userpost)
     {
         try {
             include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
             $sql = 'INSERT INTO user_pictures SET picture = :filedata, extension = :fileExt';
             $s = $pdo->prepare($sql);
-            $s->bindValue(':filedata', $this->picture);
-            $s->bindValue(':fileExt', $this->pictureFilenameExt);
+            $s->bindValue(':filedata', $userpost->getPicture());
+            $s->bindValue(':fileExt', $userpost->getPictureFilenameExt());
             $s->execute();
             return $pdo->lastInsertId();
         }

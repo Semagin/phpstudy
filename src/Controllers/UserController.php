@@ -18,7 +18,6 @@ class UserController extends AbstractController {
         if (!$this->request->isPost()) {
             $loginForm = new LoginView();
                 return ($loginForm->render());
-//            return $this->render('login.twig', []);
         }
                 return ('here will be login form!!!');    
         $params = $this->request->getParams();
@@ -26,7 +25,6 @@ class UserController extends AbstractController {
         if (!$params->has('email')) {
             $params = ['errorMessage' => 'No info provided.'];
                 return ('no info!');
-//            return $this->render('login.twig', $params);
         }
 
         $email = $params->getString('email');
@@ -37,7 +35,7 @@ class UserController extends AbstractController {
         } catch (NotFoundException $e) {
             $this->log->warn('User email not found: ' . $email);
             $params = ['errorMessage' => 'Email not found.'];
-            return $this->render('login.twig', $params);
+            return "errorMessage";
         }
 
         setcookie('user', $user->getId());
@@ -52,18 +50,10 @@ class UserController extends AbstractController {
     }
 
     public function showWelcomePlate() : string {
-        // if ($this->request->getParams()) {
-        //     # code...
-        // }
         if ($this->request->getParams()->getString('action')==='newlogin') {
             $userModel = new UserModel($this->db);
             $userModel->regUser();
-
-            // print_r($_POST['login_name']);
         }
-        // if (!$this->request->isPost()) {
-        //     print_r('try to login!');
-        // }
         require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
         if (!userIsLoggedIn()) {
             // print_r('NOT LOGIN!');

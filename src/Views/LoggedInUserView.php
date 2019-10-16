@@ -6,7 +6,6 @@ class LoggedInUserView
 {
 
   function render(): string {
-    
     return ('
       <p>
       <form action="" method="post">
