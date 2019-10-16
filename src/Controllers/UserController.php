@@ -74,5 +74,12 @@ class UserController extends AbstractController {
         return ($welcomeForm->render());
     }
 
-
+    public function showPostForm() : string {
+        // require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
+        if (isset($_SESSION['loggedIn'])) {
+            $postForm = new LoggedInUserView();
+            return ($postForm->postFormRender());
+        }
+        return('');
+    }
 }

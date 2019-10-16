@@ -44,4 +44,10 @@ class LoggedInUserView
   // ');
   // }
   }
+  public function postFormRender()
+  {
+        ob_start();
+        include_once $_SERVER['DOCUMENT_ROOT'].'/src/Views/PostFormView.html.php';
+        return ob_get_clean();
+  }
 }
