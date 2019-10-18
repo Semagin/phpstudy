@@ -23,43 +23,23 @@ class Router {
 
 
 /**
- * selects the right controller 
+ * selects the controller 
  * @param  Request $request everything that send so server
  * @return string           html code
  */
     public function route(Request $request): string {
-// check is logged in? by cookies
-// if not logged in - show login or register form in the top
-// if logged in - show user plate
-// after that - try to generate posts view using request info
-// after that  - if logged in - show post form
-// after that - show navbar
-   
-
         $path = $request->getPath();
         if ($path==='/') {
             $path='/1';
         }
-        
-
-        //  if ($request->isPost()) {
-        //     if ($request->getParams()->has('action')) {
-        //         if ($request->getParams()->getString('action') == 'upload') {
-        //             print_r($_FILES['upload']['name']);
-        //         }
-        //     }
-        // }
-        // print_r($request->getParams());
         $returnPage='';
-            foreach ($this->routeMap as $route => $info) {
-                $regexRoute = $this->getRegexRoute($route, $info);
-                if (preg_match('@'.$regexRoute.'@', $path, $matches )) {
-                        $returnPage = $returnPage.($this->executeController($route, $path, $info, $request));
-                }
+        foreach ($this->routeMap as $route => $info) {
+            $regexRoute = $this->getRegexRoute($route, $info);
+            if (preg_match('@'.$regexRoute.'@', $path, $matches )) {
+                $returnPage = $returnPage.($this->executeController($route, $path, $info, $request));
             }
-            return $returnPage;
-        $errorController = new ErrorController($this->di, $request);
-        return $errorController->notFound();
+        }
+        return $returnPage;
     }
 
     /**
@@ -74,7 +54,6 @@ class Router {
                 $route = str_replace(':' . $name, self::$regexPatters[$type], $route);
             }
         }
-
         return $route;
     }
 
@@ -94,24 +73,7 @@ class Router {
     ): string {
         $controllerName = '\Gbk\Controllers\\' . $info['controller'] . 'Controller';
         $controller = new $controllerName($this->di, $request);
-        // if (isset($info['login']) && $info['login']) {
-        //     if ($request->getCookies()->has('user')) {
-        //         $userId = $request->getCookies()->get('user');
-        //         $controller->setUserId($userId);
-        //     } else {
-        //         $errorController = new UserController($this->di, $request);
-        //         return $errorController->login();
-        //     }
-        // }
-
         $params = $this->extractParams($route, $path);
-        // print_r($controller);
-        // print_r($info['method']);
-        // print_r($params);
-        // 
-
-//        print_r($_SESSION);
-      
         return call_user_func_array([$controller, $info['method']], $params);
     }
     /**
@@ -121,23 +83,15 @@ class Router {
      * @return [type]        array (param_name, param_value)
      */
     private function extractParams(string $route, string $path): array {
-        // print_r($route.'+++++++++'.$path);
-
         $params = [];
-
         $pathParts = explode('/', $path);
         $routeParts = explode('/', $route);
-        // print_r($routeParts.'+++++++++'.$pathParts);
-        // print_r($pathParts);
         foreach ($routeParts as $key => $routePart) {
             if (strpos($routePart, ':') === 0) {
-                // print_r($pathParts[$key]);
                 $name = substr($routePart, 1);
                 $params[$name] = $pathParts[$key];
-
             }
         }
-        // print_r($params);
         return $params;
     }
 }

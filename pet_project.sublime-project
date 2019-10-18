@@ -28,7 +28,8 @@
 				".vagrant",
 				"vendor",
 				"VikaTesting",
-				"pics"
+				"pics",
+				"phpmyadmin"
 			],
 			"path": "."
 		}
