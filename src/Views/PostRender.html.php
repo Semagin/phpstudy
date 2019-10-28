@@ -1,8 +1,15 @@
 <?php
-  		echo "<div id=\"tablecontainer\">";
+  		    echo "<div id= \"tableheader\">";
+            echo "<div id= \"headerlabel\">"." <a href=\"".$page."?sortby=1\">User name</a></div>";
+            echo "<div id= \"headerlabel\">Post</div>";
+            echo "<div id= \"headerlabel\">"." <a href=\"".$page."?sortby=2\">Post date</a></div>";
+            echo "</div>";
+
         foreach ($posts as $posttoshow) {
                 // print_r($posttoshow->getPost());
                 // print_r($posttoshow);
+            
+        
         	echo "<div id=\"tableRow\">       		<div id=\"postid1\">";
         	echo markdownout($posttoshow->getUserName());
         	echo "    </div>

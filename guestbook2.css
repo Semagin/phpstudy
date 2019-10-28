@@ -27,7 +27,7 @@ a:visited {
 {
 	display: table-row;
 	border: thin solid black;
-
+	clear: both;
 }
 #headerlabel, #postid1, #userpost, #postdate
 {
@@ -58,6 +58,13 @@ a:visited {
 #loginform
 {
 	float: right;
+	width: 10%;	
+}
+
+#welcomephrase
+{
+	float: left;
+	width: 20%;	
 }
 
 #loginspace

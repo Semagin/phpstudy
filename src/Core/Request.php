@@ -11,6 +11,7 @@ class Request {
     private $method;
     private $params;
     private $cookies;
+    private $session;
 
     public function __construct() {
         $this->domain = $_SERVER['HTTP_HOST'];

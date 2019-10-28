@@ -3,7 +3,7 @@ namespace Gbk\Domain;
 
 class Post {
 
-        //data members
+//data members
     private $postid;
     private $userid;
     private $username;
