@@ -13,7 +13,8 @@ class PostController extends AbstractController {
     
     public function showPosts($page): string {
 
-        $userController = new UserController($this->di, $this->request);
+
+                $userController = new UserController($this->di, $this->request);
         $returnPage = $userController->showWelcomePlate();
         if (isset($_POST['text'])) {
             $this->saveNewPost();
@@ -92,7 +93,8 @@ class PostController extends AbstractController {
             $nav->getNavigator();
             return $returnPage.($rndr->render($posts,$page)).($userController->showPostForm()).($nav->getNavigator());
         }
-        return $returnPage.($rndr->render($posts));
+         // print_r($posts);
+        return $returnPage.($rndr->render($posts)).($userController->showPostForm());
     }
     public function saveNewPost()
     {

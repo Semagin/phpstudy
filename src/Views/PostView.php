@@ -6,9 +6,9 @@ namespace Gbk\Views;
 
 class PostView
 {
-    function render (array $posts, $page):string
+    function render (array $posts, $page=1):string
     {
-        ob_start();
+ 		ob_start();
         include_once $_SERVER['DOCUMENT_ROOT'].'/src/Views/PostRender.html.php';
         return ob_get_clean();
     }
