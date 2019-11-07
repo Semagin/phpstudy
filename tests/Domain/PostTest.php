@@ -14,7 +14,9 @@ class PostTest extends PHPUnit_Framework_TestCase
 
 	public function setUp()
 	{
-	$this->postForTest = new Post (1,'hot');
+	$this->postForTest = new Post ();
+	$this->postForTest->setUserId(1);
+	$this->postForTest->setPost('hot');
 	$this->postForTest->setPostId(1);
     $this->postForTest->setUserName('kolobok');
     $this->postForTest->setPostDate(date('y-m-d'));
