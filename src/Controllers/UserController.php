@@ -19,31 +19,9 @@ class UserController extends AbstractController {
             $loginForm = new LoginView();
                 return ($loginForm->render());
         }
-                return ('here will be login form!!!');    
-        $params = $this->request->getParams();
-
-        if (!$params->has('email')) {
-            $params = ['errorMessage' => 'No info provided.'];
-                return ('no info!');
-        }
-
-        $email = $params->getString('email');
-        $userModel = new UserModel($this->db);
-
-        try {
-            $user = $userModel->getByEmail($email);
-        } catch (NotFoundException $e) {
-            $this->log->warn('User email not found: ' . $email);
-            $params = ['errorMessage' => 'Email not found.'];
-            return "errorMessage";
-        }
-
-        setcookie('user', $user->getId());
-// if login was successful, show posts
-//        $newController = new BookController($this->di, $this->request);
- //       return $newController->getAll();
-        return 'show me posts';
+        return ('nononono');
     }
+    
     public function showRegisterForm() : string {
             $regForm = new RegView();
                 return ($regForm->render());

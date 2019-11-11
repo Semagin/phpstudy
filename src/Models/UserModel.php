@@ -28,19 +28,41 @@ class UserModel extends AbstractModel {
         );
     }
 
-    public function getByEmail(string $email): User {
-        $query = 'SELECT * FROM users WHERE email = :user';
+    // public function getByEmail(string $email): User {
+    //     $query = 'SELECT * FROM users WHERE email = :user';
+    //     $sth = $this->db->prepare($query);
+    //     $sth->execute(['user' => $email]);
+
+    //     $row = $sth->fetch();
+
+    //     if (empty($row)) {
+    //         throw new NotFoundException();
+    //     }
+
+    //     return UserFactory::factory(
+    //         $row['user_type_id'],
+    //         $row['user_id'],
+    //         $row['login_name'],
+    //         $row['view_name'],
+    //         $row['email'],
+    //         $row['homepage']
+    //     );
+    // }
+    public function getByLoginName(string $login_name){
+        $query = 'SELECT * FROM users, user_type WHERE login_name = :login_name and user_type.user_type_id=users.user_type_id';
+
         $sth = $this->db->prepare($query);
-        $sth->execute(['user' => $email]);
 
+        $sth->execute(['login_name' => $login_name]);
         $row = $sth->fetch();
-
-        if (empty($row)) {
+          if (empty($row)) {
             throw new NotFoundException();
         }
-
+        // print_r(
+        //     $row['user_type']
+        // );
         return UserFactory::factory(
-            $row['user_type_id'],
+            $row['user_type'],
             $row['user_id'],
             $row['login_name'],
             $row['view_name'],
