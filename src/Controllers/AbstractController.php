@@ -19,13 +19,8 @@ abstract class AbstractController {
         $this->db = $di->get('PDO');
         $this->log = $di->get('Logger');
         $this->config = $di->get('Utils/config');
-    }
-
+        }
     public function setUserId(int $userId) {
         $this->userId = $userId;
+        }
     }
-
-    protected function render(string $template, array $params): string {
-        return 0;
-    }
-}

@@ -1,18 +1,24 @@
 <?php
 
 namespace Gbk\Models;
+
 use Gbk\Domain\Post;
 use Gbk\Exceptions\NotFoundException;
-
 use PDO;
+
 class PostModel extends AbstractModel {
+   
    const CLASSNAME = '\Gbk\Domain\Post';
 
+   /**
+    * saves user post (without picture)
+    * @param  Post   $userpost 
+    * @return nothing
+    */
    public function saveUserPost (Post $userpost)
     {
-        // print_r($userpost);
         if (($userpost->getUserId())){
-            include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
+            $db=$this->db;
             if (($userpost->getPictureId())) {
                 try {
                     $sql = 'insert into posts set
@@ -20,7 +26,7 @@ class PostModel extends AbstractModel {
                     user_text = :text,
                     post_date = :date,
                     pic_id = :picId';
-                    $s = $pdo->prepare($sql);
+                    $s = $db->prepare($sql);
                     $s->bindValue('id', $userpost->getUserId());
                     $s->bindValue('text',$userpost->getPost());
                     $s->bindValue('date', date('y-m-d'));
@@ -40,8 +46,7 @@ class PostModel extends AbstractModel {
                     user_id = :id,
                     user_text = :text,
                     post_date = :date';
-                    // print_r ($sql);
-                    $s = $pdo->prepare($sql);
+                    $s = $db->prepare($sql);
                     $s->bindValue('id', $userpost->getUserId());
                     $s->bindValue('text',$userpost->getPost());
                     $s->bindValue('date', date('y-m-d'));
@@ -54,14 +59,18 @@ class PostModel extends AbstractModel {
                 }
             }                  
         }
-        // print_r($userpost->userid);
     }
+    
+    /**
+     * save picture data for user post
+     * @param  Post   $userpost 
+     * @return nothing
+     */
     public function savePicture(Post $userpost)
     {
         try {
-            include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
             $sql = 'INSERT INTO user_pictures SET picture = :filedata, extension = :fileExt';
-            $s = $pdo->prepare($sql);
+            $s = $this->db->prepare($sql);
             $s->bindValue(':filedata', $userpost->getPicture());
             $s->bindValue(':fileExt', $userpost->getPictureFilenameExt());
             $s->execute();
@@ -73,7 +82,13 @@ class PostModel extends AbstractModel {
             exit();
         }
     }
-
+    /**
+     * gets array of posts
+     * @param  integer $startpage 
+     * @param  string  $sortby   in SQL format
+     * @param  integer $perpage   posts per page
+     * @return array of posts
+     */
     public function getPostsPage($startpage=1, $sortby='', $perpage=5): array
     {
         $postarray = array();
@@ -87,12 +102,14 @@ class PostModel extends AbstractModel {
             return $result;
     }
 
+    /**
+     * @return amount of all posts
+     */
     public function countAllPosts () 
     {
-        include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';         
         $sql = 'SELECT count(*) from posts';
         try{
-            $s = $pdo->prepare($sql);
+            $s = $this->db->prepare($sql);
             $s->execute();
         }
         catch (PDOException $e) {
@@ -102,6 +119,4 @@ class PostModel extends AbstractModel {
         }
         return($s->fetch()[0]);
     }
-
-
 }

@@ -1,5 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] .
-    '/includes/helpers.inc.php'; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] .'/includes/helpers.inc.php'; ?>
 
     <h3>Type your message here:</h3>
     <form action="" method="post" enctype="multipart/form-data">

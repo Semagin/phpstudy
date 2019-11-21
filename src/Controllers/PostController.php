@@ -10,11 +10,13 @@ use Gbk\Domain\Post;
 define("PERPAGE", 5);
 
 class PostController extends AbstractController {
-    
+    /**
+     * prepare for render post page , welcomeplate and pagenavogator if need
+     * @param  int $page number of page
+     * @return string returnpage
+     */
     public function showPosts($page): string {
-
-
-                $userController = new UserController($this->di, $this->request);
+        $userController = new UserController($this->di, $this->request);
         $returnPage = $userController->showWelcomePlate();
         if (isset($_POST['text'])) {
             $this->saveNewPost();
@@ -28,7 +30,6 @@ class PostController extends AbstractController {
             setcookie('sortbydate',"asc",time()+3600);
             setcookie('sortbyname',"asc",time()+3600);
             setcookie('sortby',"date",time()+3600);
-
         }
         elseif (!isset($sortby)) {
             if ($_COOKIE['sortbyname']=='desc' && $_COOKIE['sortby']=='name') {
@@ -93,43 +94,37 @@ class PostController extends AbstractController {
             $nav->getNavigator();
             return $returnPage.($rndr->render($posts,$page)).($userController->showPostForm()).($nav->getNavigator());
         }
-         // print_r($posts);
         return $returnPage.($rndr->render($posts)).($userController->showPostForm());
     }
     public function saveNewPost()
     {
         // create post structure and save it with saveUserPost
-        
         if (isset($_POST['text'])) {
-        $newpost = new Post();
-        $newpost->setPost($_POST['text']);
-        $newpost->setUserId($_SESSION['userId']);
-        $newPostModel = new PostModel($this->db);
-        if ($_FILES['upload']['name']) {
-            switch ($_FILES['upload']['type']) {
-            case 'image/jpeg':
-                $newpost->setPictureFilenameExt('jpeg');
-                break;
-            case 'image/png':
-                $newpost->setPictureFilenameExt('png');
-                break;
-            case 'image/gif':
-                $newpost->setPictureFilenameExt('gif');
-                break;
-            default:
-                echo ("nonononono");
-                header('Location: .');
-                exit();
-                break;
+            $newpost = new Post();
+            $newpost->setPost($_POST['text']);
+            $newpost->setUserId($_SESSION['userId']);
+            $newPostModel = new PostModel($this->db);
+            if ($_FILES['upload']['name']) {
+                switch ($_FILES['upload']['type']) {
+                case 'image/jpeg':
+                    $newpost->setPictureFilenameExt('jpeg');
+                    break;
+                case 'image/png':
+                    $newpost->setPictureFilenameExt('png');
+                    break;
+                case 'image/gif':
+                    $newpost->setPictureFilenameExt('gif');
+                    break;
+                default:
+                    header('Location: .');
+                    exit();
+                    break;
+                }
+                $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
+                $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
+                $newpost->setPictureId($newPostModel->savePicture($newpost));
             }
-            $newpost->setPicture(file_get_contents($_FILES['upload']['tmp_name']));
-            $newpost->setPictureTmpFilename($_FILES['upload']['tmp_name']);
-            $newpost->setPictureId($newPostModel->savePicture($newpost));
-        }
-        // print_r($newpost);
-        $newPostModel->saveUserPost($newpost);
-        // header('Location: .');
-        // exit();
+            $newPostModel->saveUserPost($newpost);
         }
     }
 }

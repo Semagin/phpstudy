@@ -21,12 +21,11 @@ class Router {
         $this->routeMap = json_decode($json, true);
     }
 
-
-/**
- * selects the controller 
- * @param  Request $request everything that send so server
- * @return string           html code
- */
+    /**
+     * selects the controller 
+     * @param  Request $request everything that send so server
+     * @return string           html code
+     */
     public function route(Request $request): string {
         $path = $request->getPath();
         if ($path==='/') {
@@ -76,6 +75,7 @@ class Router {
         $params = $this->extractParams($route, $path);
         return call_user_func_array([$controller, $info['method']], $params);
     }
+    
     /**
      * compare param`s names from routes.json and real values from request`s path
      * @param  string $route 

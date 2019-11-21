@@ -3,7 +3,6 @@ namespace Gbk\Domain;
 
 class Post {
 
-//data members
     private $postid;
     private $userid;
     private $username;
@@ -13,15 +12,10 @@ class Post {
     private $pictureFilenameExt;
     private $postdate;
     private $pictureTmpFileName;
-//////////////////////////////////////////////////////////////////
-//constructor
-/////////////////////////////////////////////////////////////////
+
     public function __construct()
     {
     }
-//////////////////////////////////////////////////////////////////
-//destructor
-//////////////////////////////////////////////////////////////////
     public function __destruct()
     {
     }
@@ -61,7 +55,7 @@ class Post {
     {
         return $this->pictureFilenameExt;
     }
-    
+
     public function setPictureTmpFilename($fname)
     {
         $this->pictureTmpFilename = $fname; 
@@ -104,5 +98,4 @@ class Post {
     {
         $this->picture = $postpicture;
     }
-   
 }

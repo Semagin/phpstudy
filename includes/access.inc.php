@@ -1,6 +1,6 @@
 <?php
 
-function userIsLoggedIn()
+function userIsLoggedIn($db)
 {
     if ((isset($_POST['action']) and $_POST['action'] == 'login') or (isset($_POST['action']) and $_POST['action'] == 'newlogin')) {
         if (!isset($_POST['login_name']) or $_POST['login_name'] == '' or !isset($_POST['passwd']) or $_POST['passwd'] == '') {
@@ -8,12 +8,12 @@ function userIsLoggedIn()
             return FALSE;
         }
         $passwd = md5($_POST['passwd'] . 'gbk');
-        if (databaseContainsAuthor($_POST['login_name'], $passwd)) {
+        if (databaseContainsAuthor($_POST['login_name'], $passwd, $db)) {
             session_start();
             $_SESSION['loggedIn'] = TRUE;
             $_SESSION['login_name'] = $_POST['login_name'];
             $_SESSION['passwd'] = $passwd;
-            $_SESSION['userId'] = getUserId($_POST['login_name']);
+            $_SESSION['userId'] = getUserId($_POST['login_name'], $db);
             return TRUE;
         }
         else {
@@ -37,17 +37,16 @@ function userIsLoggedIn()
     }
     session_start();
     if (isset($_SESSION['loggedIn'])) {
-        return databaseContainsAuthor($_SESSION['login_name'], $_SESSION['passwd']);
+        return databaseContainsAuthor($_SESSION['login_name'], $_SESSION['passwd'], $db);
     }
 }
 
-function databaseContainsAuthor($login_name, $passwd)
+function databaseContainsAuthor($login_name, $passwd, $db)
 {
-    include 'db.inc.php';
     try {
         $sql = 'SELECT COUNT(*) FROM users
         WHERE login_name = :login_name AND passwd = :passwd';
-        $s = $pdo->prepare($sql);
+        $s = $db->prepare($sql);
         $s->bindValue(':login_name', $login_name);
         $s->bindValue(':passwd', $passwd);
         $s->execute();
@@ -66,12 +65,11 @@ function databaseContainsAuthor($login_name, $passwd)
     }
 }
 
-function getUserId($login_name)
+function getUserId($login_name, $db)
 {
-   include 'db.inc.php';
    try {
         $sql = 'SELECT user_id FROM users where login_name=:login_name';
-        $s = $pdo->prepare($sql);
+        $s = $db->prepare($sql);
         $s->bindValue(':login_name', $login_name);
         $s->execute();
     }

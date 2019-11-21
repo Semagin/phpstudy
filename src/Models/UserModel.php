@@ -7,17 +7,15 @@ use Gbk\Domain\User\UserFactory;
 use Gbk\Exceptions\NotFoundException;
 
 class UserModel extends AbstractModel {
+
     public function get(int $userId): User {
         $query = 'SELECT * FROM users WHERE user_id = :user';
         $sth = $this->db->prepare($query);
         $sth->execute(['user' => $userId]);
-
         $row = $sth->fetch();
-
         if (empty($row)) {
             throw new NotFoundException();
         }
-
         return UserFactory::factory(
             $row['user_type_id'],
             $row['user_id'],
@@ -28,39 +26,14 @@ class UserModel extends AbstractModel {
         );
     }
 
-    // public function getByEmail(string $email): User {
-    //     $query = 'SELECT * FROM users WHERE email = :user';
-    //     $sth = $this->db->prepare($query);
-    //     $sth->execute(['user' => $email]);
-
-    //     $row = $sth->fetch();
-
-    //     if (empty($row)) {
-    //         throw new NotFoundException();
-    //     }
-
-    //     return UserFactory::factory(
-    //         $row['user_type_id'],
-    //         $row['user_id'],
-    //         $row['login_name'],
-    //         $row['view_name'],
-    //         $row['email'],
-    //         $row['homepage']
-    //     );
-    // }
     public function getByLoginName(string $login_name){
         $query = 'SELECT * FROM users, user_type WHERE login_name = :login_name and user_type.user_type_id=users.user_type_id';
-
         $sth = $this->db->prepare($query);
-
         $sth->execute(['login_name' => $login_name]);
         $row = $sth->fetch();
           if (empty($row)) {
             throw new NotFoundException();
         }
-        // print_r(
-        //     $row['user_type']
-        // );
         return UserFactory::factory(
             $row['user_type'],
             $row['user_id'],
@@ -70,13 +43,11 @@ class UserModel extends AbstractModel {
             $row['homepage']
         );
     }
+
     /**
      * register new user and login him
      */
     public function regUser() {
-        include $_SERVER['DOCUMENT_ROOT'] . '/includes/db.inc.php';
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/includes/access.inc.php';
-
         try {
             $sql = 'INSERT INTO users SET
                 user_type_id = 1,
