@@ -20,6 +20,8 @@ class PostTest extends PHPUnit_Framework_TestCase
 	$this->postForTest->setPostId(1);
     $this->postForTest->setUserName('kolobok');
     $this->postForTest->setPostDate(date('y-m-d'));
+    $this->postForTest->setPictureTmpFilename('PictureTmpFilename');
+    
 	}
 	
 	public function testGetPostId()
