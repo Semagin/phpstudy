@@ -13,60 +13,58 @@ class Post {
     private $postdate;
     private $pictureTmpFileName;
 
-    public function __construct()
-    {
+    public function __construct() {
     }
-    public function __destruct()
-    {
+    
+    public function __destruct() {
     }
-    public function getPostId ()
-    {
+    
+    public function getPostId () :int {
         return $this->postid;
     }
-    public function getPictureTmpFilename()
-    {
+    
+    public function getPictureTmpFilename(): string {
         return $this->pictureTmpFilename; 
     }
-    public function getUserName ()
-    {
+    
+    public function getUserName (): string {
         return $this->username;
     }   
-    public function getUserId ()
-    {
+    
+    public function getUserId (): int {
         return $this->userid;
     }
-    public function getPost()
-    {
+    
+    public function getPost(): string {
         return $this->post;
     }
-    public function getPicture()
-    {
+    
+    public function getPicture() {
         return $this->picture;
     }
-    public function getPictureId()
-    {
+    
+    public function getPictureId(): int {
         return $this->pictureId;
     }
-    public function getPostDate()
-    {
+    
+    public function getPostDate() {
         return $this->postdate;
     }
-    public function getPictureFilenameExt()
-    {
+    
+    public function getPictureFilenameExt(): string {
         return $this->pictureFilenameExt;
     }
 
-    public function setPictureTmpFilename($fname)
-    {
+    public function setPictureTmpFilename($fname) {
         $this->pictureTmpFilename = $fname; 
     }
-    public function setPictureFilenameExt($pic)
-    {
+    
+    public function setPictureFilenameExt($pic) {
 
         $this->pictureFilenameExt = $pic;
     }
-    public function setPictureId ($picId)
-    {
+    
+    public function setPictureId ($picId) {
         if (!$picId) {
             $this->pictureId = 0;
         }
@@ -74,28 +72,28 @@ class Post {
             $this->pictureId = $picId;
         }
     }
-    public function setPost ($posttext)
-    {
+    
+    public function setPost ($posttext) {
         $this->post = $posttext;
     }
-    public function setUserName ($name)
-    {
+    
+    public function setUserName ($name) {
         $this->username = $name;
     }
-    public function setUserId ($id)
-    {
+    
+    public function setUserId ($id) {
         $this->userid = $id;
     }
-    public function setPostId ($postid)
-    {
+    
+    public function setPostId ($postid) {
         $this->postid = $postid;
     }
-    public function setPostDate ($postdate)
-    {
+    
+    public function setPostDate ($postdate) {
         $this->postdate = $postdate;
     }
-    public function setPicture ($postpicture)
-    {
+    
+    public function setPicture ($postpicture) {
         $this->picture = $postpicture;
     }
 }

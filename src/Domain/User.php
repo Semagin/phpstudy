@@ -9,8 +9,7 @@ class User {
 	private $email;
 	private $homepage;
 
-	public function __construct ($userid, $loginname, $viewname, $useremail, $userhomepage)
-	{
+	public function __construct ($userid, $loginname, $viewname, $useremail, $userhomepage)	{
 		$this->user_id=$userid;
 		$this->login_name = $loginname;
 		$this->view_name = $viewname;
@@ -18,8 +17,7 @@ class User {
 		$this->homepage = $userhomepage;
 	}
 
-	public function getId(): int
-	{
+	public function getId(): int {
 		return $this->user_id;
 	}
 }

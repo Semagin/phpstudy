@@ -8,25 +8,12 @@ use Gbk\Exceptions\NotFoundException;
 
 class UserModel extends AbstractModel {
 
-    public function get(int $userId): User {
-        $query = 'SELECT * FROM users WHERE user_id = :user';
-        $sth = $this->db->prepare($query);
-        $sth->execute(['user' => $userId]);
-        $row = $sth->fetch();
-        if (empty($row)) {
-            throw new NotFoundException();
-        }
-        return UserFactory::factory(
-            $row['user_type_id'],
-            $row['user_id'],
-            $row['login_name'],
-            $row['view_name'],
-            $row['email'],
-            $row['homepage']
-        );
-    }
-
-    public function getByLoginName(string $login_name){
+    /**
+     * get logged in user by loginName
+     * @param  string $login_name 
+     * @return user special type
+     */
+    public function getByLoginName(string $login_name): User {
         $query = 'SELECT * FROM users, user_type WHERE login_name = :login_name and user_type.user_type_id=users.user_type_id';
         $sth = $this->db->prepare($query);
         $sth->execute(['login_name' => $login_name]);
